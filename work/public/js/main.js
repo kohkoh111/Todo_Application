@@ -1,14 +1,16 @@
 'use strict';
 
 {
+  const token = document.querySelector('main').dataset.token;
+
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach(checkbox => {
     checkbox.addEventListener('change', () => {
       fetch('?action=toggle', {
         method: 'POST',
         body: new URLSearchParams({
-          id: checkbox.dataset.id,
-          token: checkbox.dataset.token,
+          id: checkbox.parentNode.dataset.id,
+          token: token,
         }),
       });
     });
@@ -24,8 +26,8 @@
       fetch('?action=delete', {
         method: 'POST',
         body: new URLSearchParams({
-          id: span.dataset.id,
-          token: span.dataset.token,
+          id: span.parentNode.dataset.id,
+          token: token,
         }),
       });
 
@@ -38,6 +40,19 @@
     if (!confirm('Are you sure?')) {
       return;
     }
-    purge.parentNode.submit();
+
+    fetch('?action=purge', {
+      method: 'POST',
+      body: new URLSearchParams({
+        token: token,
+      }),
+    });
+
+    const lis = document.querySelectorAll('li');
+    lis.forEach(li => {
+      if (li.children[0].checked) {
+        li.remove();
+      }
+    });
   });
 }
