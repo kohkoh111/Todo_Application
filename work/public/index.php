@@ -27,26 +27,19 @@ $todos = $todo->getAll();
       <span class="purge">Purge</span>
     </header>
 
-    <form action="?action=add" method="post">
+    <form>
       <input type="text" name="title" placeholder="Type new todo.">
-      <input type="hidden" name="token" value="<?= Utils::h($_SESSION['token']); ?>">
     </form>
 
     <ul>
       <?php foreach ($todos as $todo): ?>
       <li data-id="<?= Utils::h($todo->id); ?>">
-        <input
-          type="checkbox"
-          data-id="<?= Utils::h($todo->id); ?>"
-          <?= $todo->is_done ? 'checked' : ''; ?>>
 
+        <inpu type="checkbox" <?= $todo->is_done ? 'checked' : ''; ?>>
         <span><?= Utils::h($todo->title); ?></span>
 
-        <span
-          data-id="<?= Utils::h($todo->id); ?>"
-          class="delete">
-          x
-        </span>
+        <span class="delete">x</span>
+
       </li>
       <?php endforeach; ?>
     </ul>

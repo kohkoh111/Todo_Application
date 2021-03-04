@@ -20,7 +20,9 @@ class Todo
 
       switch ($action) {
         case 'add':
-          $this->add();
+          $id = $this->add();
+          header('content-type: application/json');
+          echo json_encode(['id' => $id]);
           break;
         case 'toggle':
           $this->toggle();
@@ -50,6 +52,8 @@ class Todo
     $stmt = $this->pdo->prepare("INSERT INTO todos (title) VALUES (:title)");
     $stmt->bindValue('title', $title, \PDO::PARAM_STR);
     $stmt->execute();
+    return (int) $this->PDO->lastInsertId();
+
   }
 
   private function toggle()
