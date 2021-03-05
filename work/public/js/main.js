@@ -2,18 +2,49 @@
 
 {
   const token = document.querySelector('main').dataset.token;
+  const input = document.querySelector('[name="title"]');
 
-  document.querySelector('form').addEventListener('submit', e=>{
+input.focus();
+
+
+function addTodo(id){
+  const li = document.createElement('li');
+  li.dataset.id = id;
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  const title = document.createElement('span');
+  title.textContent = input.value;
+  const deleteSpan = document.createElement('span');
+  deleteSpan.textContent = 'x';
+  deleteSpan.classList.add('delete');
+
+  li.appendChild(checkbox);
+  li.appendChild(title);
+  li.appendChild(deleteSpan);
+
+  const ul = document.querySelector('ul');
+  ul.insertBefore(li, ul.firstChild);
+  
+}
+
+  document.querySelector('form').addEventListener('submit', e => {
     e.preventDefault();
 
     fetch('?action=add', {
       method: 'POST',
       body: new URLSearchParams({
-      title: document.querySelector('[name="title"]').value,
-      token: token,
-
+        title: input.value,
+        token: token,
       }),
+    })
+    .then(response => response.json())
+    .then(json => {
+      addTodo(json.id);
     });
+
+    input.value = '';
+    input.focus();
+
   });
 
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');

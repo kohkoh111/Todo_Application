@@ -34,12 +34,9 @@ $todos = $todo->getAll();
     <ul>
       <?php foreach ($todos as $todo): ?>
       <li data-id="<?= Utils::h($todo->id); ?>">
-
-        <inpu type="checkbox" <?= $todo->is_done ? 'checked' : ''; ?>>
+        <input type="checkbox" <?= $todo->is_done ? 'checked' : ''; ?>>
         <span><?= Utils::h($todo->title); ?></span>
-
         <span class="delete">x</span>
-
       </li>
       <?php endforeach; ?>
     </ul>
